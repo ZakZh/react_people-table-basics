@@ -1,17 +1,21 @@
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
 import { type Person } from '../../types/Person';
 
 type Props = {
-  slug: Person['slug'];
-  children: React.ReactNode;
-  classNames?: string;
+  person: Person;
 };
 
-export const PersonLink: React.FC<Props> = ({ slug, children, classNames }) => {
+export const PersonLink: React.FC<Props> = ({ person }) => {
   return (
-    <Link to={slug} className={classNames}>
-      {children}
+    <Link
+      to={`/people/${person.slug}`}
+      className={classNames('', {
+        'has-text-danger': person.sex === 'f',
+      })}
+    >
+      {person.name}
     </Link>
   );
 };

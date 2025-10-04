@@ -32,14 +32,7 @@ export const PeopleTable: React.FC<Props> = ({
             })}
           >
             <td>
-              <PersonLink
-                slug={person.slug}
-                classNames={classNames({
-                  'has-text-danger': person.sex === 'f',
-                })}
-              >
-                {person.name}
-              </PersonLink>
+              <PersonLink person={person} />
             </td>
 
             <td>{person.sex}</td>
@@ -47,12 +40,7 @@ export const PeopleTable: React.FC<Props> = ({
             <td>{person.died}</td>
             <td>
               {person.mother ? (
-                <PersonLink
-                  slug={person.mother.slug}
-                  classNames="has-text-danger"
-                >
-                  {person.mother.name}
-                </PersonLink>
+                <PersonLink person={person.mother} />
               ) : person.motherName ? (
                 person.motherName
               ) : (
@@ -61,9 +49,7 @@ export const PeopleTable: React.FC<Props> = ({
             </td>
             <td>
               {person.father ? (
-                <PersonLink slug={person.father.slug}>
-                  {person.father.name}
-                </PersonLink>
+                <PersonLink person={person.father} />
               ) : person.fatherName ? (
                 person.fatherName
               ) : (

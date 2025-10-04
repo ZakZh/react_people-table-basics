@@ -23,9 +23,9 @@ export const Navbar: React.FC = () => {
           </NavLink>
 
           <NavLink
-            to="people"
+            to="/people"
             className={({ isActive }) =>
-              classNames('navbar-item ', {
+              classNames('navbar-item', {
                 'has-background-grey-lighter': isActive,
               })
             }
