@@ -1,33 +1,14 @@
-import { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { getPeople } from '../api';
 import { Loader } from '../components/Loader';
 import { PeopleTable } from '../components/PeopleTable/PeopleTable';
-import { Person } from '../types';
+import { usePeople } from '../hooks/usePeople';
+import { MESSAGES } from '../constants';
 
 export const PeoplePage: React.FC = () => {
-  const [people, setPeople] = useState<Person[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const { slug } = useParams();
-
-  useEffect(() => {
-    setIsLoading(true);
-    setIsError(false);
-
-    getPeople()
-      .then(setPeople)
-      .catch(() => setIsError(true))
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  const peopleMap = new Map(people.map(p => [p.name, p]));
-  const peopleWithParents = people.map(person => ({
-    ...person,
-    mother: person.motherName ? peopleMap.get(person.motherName) : undefined,
-    father: person.fatherName ? peopleMap.get(person.fatherName) : undefined,
-  }));
+  const { slug } = useParams<{ slug: string }>();
+  const { peopleWithParents, isLoading, error } = usePeople();
 
   return (
     <>
@@ -37,21 +18,21 @@ export const PeoplePage: React.FC = () => {
         <div className="box table-container">
           {isLoading && <Loader />}
 
-          {isError && (
+          {error && (
             <p data-cy="peopleLoadingError" className="has-text-danger">
-              Something went wrong
+              {error}
             </p>
           )}
 
           {!isLoading &&
-            !isError &&
-            (people.length > 0 ? (
+            !error &&
+            (peopleWithParents.length > 0 ? (
               <PeopleTable
                 people={peopleWithParents}
-                selectedPersonSlug={slug || ''}
+                selectedPersonSlug={slug}
               />
             ) : (
-              <p data-cy="noPeopleMessage">There are no people on the server</p>
+              <p data-cy="noPeopleMessage">{MESSAGES.NO_PEOPLE}</p>
             ))}
         </div>
       </div>

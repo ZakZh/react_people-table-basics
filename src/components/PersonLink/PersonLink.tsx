@@ -3,15 +3,15 @@ import classNames from 'classnames';
 
 import { type Person } from '../../types/Person';
 
-type Props = {
+interface PersonLinkProps {
   person: Person;
-};
+}
 
-export const PersonLink: React.FC<Props> = ({ person }) => {
+export const PersonLink: React.FC<PersonLinkProps> = ({ person }) => {
   return (
     <Link
       to={`/people/${person.slug}`}
-      className={classNames('', {
+      className={classNames({
         'has-text-danger': person.sex === 'f',
       })}
     >
